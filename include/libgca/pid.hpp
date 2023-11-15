@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
+
 class PID {
-    
     double output;
     double cur;
     double error;
@@ -12,7 +12,13 @@ class PID {
     long time;
     long prev_time;
 
- public:
+   
+
+    int smalltime;
+    int bigtime;
+    int veltime;
+ public: 
+    bool settled;
   /**
    * Default constructor.
    */
@@ -68,6 +74,8 @@ class PID {
     int mA_timeout = 0;
   };
 
+    Constants constants;
+    exit_condition_ exit;
   /**
    * Sets constants for exit conditions.
    *
@@ -82,7 +90,7 @@ class PID {
    * \param velocity_exit_time
    *        Timer will start when velocity is 0.
    */
-  void set_exit_condition(int small_exit_time, double small_error, int big_exit_time = 0, double big_error = 0, int velocity_exit_time = 0, int mA_timeout = 0);
+  void set_exit_condition(int small_exit_time, double small_error, int big_exit_time = 0, double big_error = 0, int velocity_exit_time = 0);
 
   /**
    * Set's target.
@@ -96,9 +104,9 @@ class PID {
    * Computes PID.
    *
    * \param current
-   *        Current sensor library.
+   *        Current sensor value.
    */
-  double compute(double current);
+  double step(double current);
 
   /**
    * Returns target value.
@@ -114,4 +122,6 @@ class PID {
    * Resets all variables to 0.  This does not reset constants.
    */
   void reset_variables();
+
+  void reset_timers();
 };
